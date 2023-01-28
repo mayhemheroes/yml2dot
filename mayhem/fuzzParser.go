@@ -1,13 +1,19 @@
-package fuzz
+package fuzzParser
 
-// import "io"
 import "strings"
 import "github.com/lucasepe/yml2dot/parser"
+import fuzz "github.com/AdaLogics/go-fuzz-headers"
 
 
 func mayhemit(bytes []byte) int {
 
-    content := string(bytes)
+    fuzzConsumer := fuzz.NewConsumer(bytes)
+    var content string
+    err := fuzzConsumer.CreateSlice(&content)
+    if err != nil {
+        return 0
+    }
+
     start := content[0:len(content)/2]
     end := content[len(content)/2:len(content)]
 
